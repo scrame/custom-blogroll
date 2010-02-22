@@ -22,30 +22,18 @@ function make_link($result_map) {
 
 function custom_bookmarks($args) {
 
-  extract (shortcode_atts(array('categories'=>''), $args));
-  
+  //  extract (shortcode_atts(array('categories'=>''), $args));
+
+  $cat_array = explode(',',$args['categories']);;
   
  
   //working version with posts.
-  $main_posts = get_posts(array('numberposts'=>-1,'category__and' => array($categories)));
-
-  $output = "<h1>$args</h1>";
-  foreach(array_keys($args) as $key) {
-    $output .= "<p>$arg</p>";
-  }
-
-  foreach($args as $arg) {
-    $output .= "<p>$arg</p>";
-  }
-
-  foreach($categories as $cat) {
-    $output .= "<p>$cat</p>";
-  }
+  $main_posts = get_posts(array('numberposts'=>-1,'category__and' => $cat_array));
 
   foreach ( (array) $main_posts as $post) {    
     $result;
-    $result['title'] = apply_filters('the_title', $post->post_title);
-    $result['link'] = apply_filters('the_link', $post->post_link);
+    $result['title'] = $post->post_title;
+    $result['link'] = $post->guid;
 
     $output .= make_link($result);
   }
