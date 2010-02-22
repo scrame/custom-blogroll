@@ -1,17 +1,16 @@
 <?php
-/*
-Plugin Name: Custom Blogroll
-Plugin URI: http://wordpress.org/#
+  /*
+   Plugin Name: Custom Blogroll
+   Plugin URI: http://wordpress.org/#
 Description: Custom blogroll
 Author: liam
 Version: 0.1
 Author URI: 
 */
 
-
-$category = 5;
-$sub_category = 16;
-
+         /*
+          helper function for generating a link.
+          */
 function make_link($result_map) {
   return '<a href='
     .'"' . $result_map['link']  .'"'
@@ -21,15 +20,32 @@ function make_link($result_map) {
     .'<p>';
 }
 
-function custom_bookmarks() {
-  $main_posts = get_posts(array('category__and' => array(4,5)));
+function custom_bookmarks($args) {
 
-  $output = '';
+  extract (shortcode_atts(array('categories'=>''), $args));
+  
+  
+ 
+  //working version with posts.
+  $main_posts = get_posts(array('numberposts'=>-1,'category__and' => array($categories)));
+
+  $output = "<h1>$args</h1>";
+  foreach(array_keys($args) as $key) {
+    $output .= "<p>$arg</p>";
+  }
+
+  foreach($args as $arg) {
+    $output .= "<p>$arg</p>";
+  }
+
+  foreach($categories as $cat) {
+    $output .= "<p>$cat</p>";
+  }
 
   foreach ( (array) $main_posts as $post) {    
     $result;
     $result['title'] = apply_filters('the_title', $post->post_title);
-    $result['link'] = apply_filters('the_title', $post->post_link);
+    $result['link'] = apply_filters('the_link', $post->post_link);
 
     $output .= make_link($result);
   }
