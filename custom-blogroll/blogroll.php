@@ -3,7 +3,11 @@
    Plugin Name: Custom Blogroll
    Plugin URI: http://wordpress.org/#
 Description: Custom blogroll
-Author: liam
+Very simple, just embed
+   [show-bookmarks categories="1,2,3"]
+
+  BUGS: Does not show bookmarks, just posts. 
+Author: scrame
 Version: 0.1
 Author URI: 
 */
@@ -22,13 +26,12 @@ function make_link($result_map) {
 
 function custom_bookmarks($args) {
 
-  //  extract (shortcode_atts(array('categories'=>''), $args));
-
   $cat_array = explode(',',$args['categories']);;
-  
- 
-  //working version with posts.
+
   $main_posts = get_posts(array('numberposts'=>-1,'category__and' => $cat_array));
+
+  // to do this with bookmarks, we'll probably need to change the field from guid, to whatever the link is.
+  //  $main_posts = get_bookmarks(array('numberposts'=>-1,'category__and' => $cat_array));
 
   foreach ( (array) $main_posts as $post) {    
     $result;
@@ -39,11 +42,9 @@ function custom_bookmarks($args) {
   }
 
   return $output;
-  //  return "this is a test of the custom bookmarks.";
 }
 
-
-
+//register handler with WP.
 add_shortcode('show-bookmarks', 'custom_bookmarks')
 
 ?>
